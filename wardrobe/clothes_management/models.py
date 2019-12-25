@@ -9,6 +9,7 @@ class Cloth(DynamicDocument):
     brand = StringField(max_length=50)
     category = StringField(max_length=50)
     size = StringField(max_length=50)
+    image = FileField()
     
 
 class ClothesManager:
@@ -30,6 +31,7 @@ class ClothesManager:
             'brand': cloth.brand,
             'category': cloth.category,
             'size': cloth.size,
+            'image':byte.decode(cloth.image.read(),encoding='utf-8'),
         }
     
     @classmethod
@@ -61,6 +63,9 @@ class ClothesManager:
                         cloth_.size = cloth['size']
                     if 'color' in cloth:
                         cloth_.color = cloth['color']
+                    if 'image' in cloth:
+                        image_file = BytesIO(bytes(cloth['image'], encoding='utf-8'))
+                        cloth_.image.put(image_file)
                     cloth_.id_ = ClothesManager.get_incremental_id()
                     cloth_.save()
                     saved_clothes.append(ClothesManager.cloth2json(cloth_))
@@ -83,6 +88,7 @@ class ClothesManager:
         print(filters['owner'])
         filters['owner'] = User.get_user(filters['owner'])
         #TODO: Range as a query option.
+        
         clothes = Cloth.objects.filter(**filters)
         print(clothes)
         clothes = [] if clothes == None else [ClothesManager.cloth2json(cloth) for cloth in clothes]

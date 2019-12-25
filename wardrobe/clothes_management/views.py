@@ -18,7 +18,7 @@ def get_body(request):
 def upload_clothes(request):
     if request.method == 'POST':
         body = get_body(request)
-        if body == None:
+        if (body == None) or (not isinstance(body, dict)) :
             response = {
                 'status': '101',
                 'message': 'Ill-formed JSON body',
@@ -48,7 +48,7 @@ def upload_clothes(request):
 def get_clothes(request):
     if request.method == 'GET':
         body = get_body(request)
-        if body == None:
+        if (body == None) or (not isinstance(body, dict)):
             response = {
                 'status': '101',
                 'message': 'Ill-formed JSON body'
@@ -68,6 +68,8 @@ def get_clothes(request):
             else:
                 #Pattern: filters
                 filters = body
+                if 'image' in body:
+                    del(body['image'])
                 response = ClothesManager.get_clothes(filters)
     else:
         response = {
