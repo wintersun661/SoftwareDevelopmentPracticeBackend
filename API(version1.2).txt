@@ -3,6 +3,33 @@ REST API
 server host:39.106.57.177
 server port:8000
 
+url: authentication/register
+method: POST
+parameter:
+request body:
+{
+    "username":<string>,
+    "email":<string>,
+    "password":<string>
+}
+response bodies:
+{
+    "status":"000",
+    "message":"Registered successfully"
+}
+{
+    "status":"100",
+    "message":"Fail to register"
+}
+{
+    "status":"102",
+    "message":"Missing user fields"
+}
+{
+    "status":"103",
+    "message":"User already exists"
+}
+
 
 url: authentication/sign_in
 method: POST
