@@ -4,34 +4,6 @@ server host:39.106.57.177
 server port:8000
 
 
-url: authentication/register
-method: POST
-parameter:
-request body:
-{
-    "username":<string>,
-    "email":<string>,
-    "password":<string>
-}
-response bodies:
-{
-    "status":"000",
-    "message":"Registered successfully"
-}
-{
-    "status":"100",
-    "message":"Fail to register"
-}
-{
-    "status":"102",
-    "message":"Missing user fields"
-}
-{
-    "status":"103",
-    "message":"User already exists"
-}
-
-
 url: authentication/sign_in
 method: POST
 parameter:
@@ -43,7 +15,8 @@ request body:
 response bodies:
 {
     "status":"000",
-    "message":"Signed in successfully"
+    "message":"Signed in successfully",
+    "iconpic":<string>
 }
 {
     "status":"001",
@@ -115,6 +88,7 @@ request body:
             "size":<string>,
             "color":<string>,
             "brand":<string>,
+            "bitmap":<bitmap>
         },
         ...
     ]
@@ -192,7 +166,9 @@ response bodies:
                 "usage_count":<int>,
                 "brand":<string>,
                 "category":<string>,
-                "size":<string>
+                "size":<string>,
+                "color":<string>,
+                "bitmap":<string> 
             },
             ...
         ]
@@ -214,3 +190,54 @@ response bodies:
     "status":"103",
     "message":"Not logged in"
 }
+
+
+
+url history_management/get_wear
+method: GET
+parameter:
+request body:
+{
+    "username":<string>,
+    "date":<string>
+}
+response bodies:
+{
+    "status":"000",
+    "message":"Query made successfully",
+    "data":{
+        "num":<int>,
+        "clothesID":[
+            <int>,
+            ...
+        ]
+    }
+}
+
+url history_management/set_wear
+method: POST
+parameter:
+request body:
+{
+    "username":<string>,
+    "date":<string>,
+    "data":{
+        "num":<int>,
+        "clothesID":[
+            <int>,
+            <int>
+            ...
+        ]
+    }
+}
+response bodies:
+{
+    "status":"000",
+    "message":"Query made successfully",
+    
+}
+
+
+
+
+
