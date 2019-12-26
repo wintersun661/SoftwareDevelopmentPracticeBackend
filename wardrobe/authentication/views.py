@@ -6,6 +6,50 @@ import json
 
 # Create your views here.
 
+def register(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(bytes.decode(request.body, encoding='utf-8'))
+            print(body)
+        except:
+            response = {
+                'status': '101',
+                'message': 'Ill-formed JSON request body'
+            }
+        else:
+            username, email, password = body.get('username'), body.get('email'), body.get('password')
+            if username == None or email == None or password == None:
+                response = {
+                    'status': '102',
+                    'message': 'Missing user fields',
+                }
+            else:
+                user = User.get_user(username)
+                if user != None:
+                    response = {
+                        'status': '103',
+                        'message': 'User already exists',
+                    }
+                else:
+                    encrypted_password = make_password(password, None, 'pbkdf2_sha256')
+                    user = {
+                        'username':username,
+                        'email':email,
+                        'encrypted_password':encrypted_password,
+                    }
+                    User.register(user)
+                    response = {
+                        'status':'000',
+                        'message': 'Registered successfully',
+                    }
+
+    else:
+        response = {
+            'status': '100',
+            'message': 'Fail to register',
+        }
+    return JsonResponse(response)
+
 def sign_in(request):
     if request.method == 'POST':
         try:

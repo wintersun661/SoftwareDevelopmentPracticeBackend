@@ -13,6 +13,15 @@ class User(Document):
         return user[0] if len(user) == 1 else None
     
     @classmethod
+    def register(cls,user):
+        user_obj = User()
+        user_obj.username = user['username']
+        user_obj.email = user['email']
+        user_obj.encrypted_password = user['encrypted_password']
+        user_obj.save()
+        return True
+    
+    @classmethod
     def user2json(cls, user):
         obj = {}
         if user.username:
